@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Sunshine</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_map">Map</string>
+    <string name="action_share">Share</string>
+    <string name="action_refresh" translatable="false">Refresh</string>
+    <string name="title_activity_detail">Details</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_display_location">Location</string>
+    <string name="pref_default_location_value">Chisinau</string>
+
+    <string name="pref_title_display_unit">Units</string>
+    <string name="pref_default_unit_value">metric</string>
+
+</resources>
