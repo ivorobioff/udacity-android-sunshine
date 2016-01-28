@@ -122,7 +122,7 @@ public class ForecastFragment extends Fragment {
     private ForecastAdapter getForecastViewAdapter(){
         if (forecastViewAdapter == null){
             ArrayAdapter<String> d;
-            forecastViewAdapter = new ForecastAdapter(getActivity(), R.layout.list_item_forecast);
+            forecastViewAdapter = new ForecastAdapter(getActivity());
         }
 
         return forecastViewAdapter;

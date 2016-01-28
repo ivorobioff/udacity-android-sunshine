@@ -14,12 +14,10 @@ import android.widget.TextView;
 public class ForecastAdapter extends BaseAdapter {
 
     private Context context;
-    private int itemResourceId;
     private ForecastItem[] items = new ForecastItem[0];
 
-    ForecastAdapter(Context context, int itemResourceId){
+    ForecastAdapter(Context context){
         this.context = context;
-        this.itemResourceId = itemResourceId;
     }
 
     @Override
@@ -45,7 +43,7 @@ public class ForecastAdapter extends BaseAdapter {
         if (convertView != null){
             item = (LinearLayout) convertView;
         } else {
-            item = (LinearLayout) getInflater().inflate(itemResourceId, null);
+            item = (LinearLayout) getInflater().inflate(R.layout.list_item_forecast, null);
         }
 
         ForecastItem forecastItem = (ForecastItem) getItem(position);
@@ -53,7 +51,7 @@ public class ForecastAdapter extends BaseAdapter {
         ((TextView)item.findViewById(R.id.list_item_date_textview)).setText(forecastItem.getDay());
         ((TextView)item.findViewById(R.id.list_item_forecast_textview)).setText(forecastItem.getDescription());
         ((TextView)item.findViewById(R.id.list_item_low_textview)).setText(forecastItem.getMin().toString());
-        ((TextView)item.findViewById(R.id.list_item_low_textview)).setText(forecastItem.getMax().toString());
+        ((TextView)item.findViewById(R.id.list_item_high_textview)).setText(forecastItem.getMax().toString());
 
         return item;
     }

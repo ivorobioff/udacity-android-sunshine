@@ -28,11 +28,11 @@ public class ForecastItem {
         return description;
     }
 
-    public Double getMax(){
-        return max;
+    public Integer getMax(){
+        return max.intValue();
     }
 
-    public Double getMin(){
-        return min;
+    public Integer getMin(){
+        return min.intValue();
     }
 }
