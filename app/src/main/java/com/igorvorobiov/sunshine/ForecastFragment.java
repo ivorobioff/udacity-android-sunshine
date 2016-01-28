@@ -37,7 +37,7 @@ import java.util.GregorianCalendar;
  */
 public class ForecastFragment extends Fragment {
 
-    private ArrayAdapter<String> forecastViewAdapter = null;
+    private ForecastAdapter forecastViewAdapter = null;
 
     public ForecastFragment() {
     }
@@ -62,10 +62,8 @@ public class ForecastFragment extends Fragment {
         forecastListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String text = getForecastViewAdapter().getItem(position);
-
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent.putExtra(Intent.EXTRA_TEXT, "");
 
                 startActivity(intent);
             }
@@ -80,7 +78,9 @@ public class ForecastFragment extends Fragment {
 
         if (id == R.id.action_map){
 
-            String location = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("location", null);
+            String defaultLocation = getString(R.string.pref_default_location_value);
+
+            String location = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("location", defaultLocation);
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -119,46 +119,34 @@ public class ForecastFragment extends Fragment {
         new FetchForecastJsonTask().execute(location, units);
     }
 
-    private ArrayAdapter<String> getForecastViewAdapter(){
+    private ForecastAdapter getForecastViewAdapter(){
         if (forecastViewAdapter == null){
-            forecastViewAdapter = new ArrayAdapter<String>(
-                    getActivity(),
-                    R.layout.list_item_forecast,
-                    R.id.list_item_forecast_textview
-            );
+            ArrayAdapter<String> d;
+            forecastViewAdapter = new ForecastAdapter(getActivity(), R.layout.list_item_forecast);
         }
 
         return forecastViewAdapter;
     }
 
-    private class FetchForecastJsonTask extends AsyncTask<String, Void, String[]> {
+    private class FetchForecastJsonTask extends AsyncTask<String, Void, ForecastItem[]> {
 
         private final String LOG_TAG = FetchForecastJsonTask.class.getSimpleName();
         private final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily";
         private final String API_KEY = "27eacfe34fdc092f79128efa585c8cf0";
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected ForecastItem[] doInBackground(String... params) {
             String json = fetchForecastJson(params[0], params[1]);
             try {
                 return parseForecastJson(json);
             } catch (JSONException e){
                 Log.e(LOG_TAG, e.toString());
-                return new String[0];
+                return new ForecastItem[0];
             }
         }
 
-        protected void onPostExecute(String[] items) {
-
-            getForecastViewAdapter().clear();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                getForecastViewAdapter().addAll(items);
-            } else {
-                for (String item : items){
-                    getForecastViewAdapter().add(item);
-                }
-            }
+        protected void onPostExecute(ForecastItem[] items) {
+            getForecastViewAdapter().refresh(items);
         }
 
         private String fetchForecastJson(String location, String units)
@@ -206,10 +194,10 @@ public class ForecastFragment extends Fragment {
             return json;
         }
 
-        private String[] parseForecastJson(String json) throws JSONException{
+        private ForecastItem[] parseForecastJson(String json) throws JSONException{
             JSONObject root = new JSONObject(json);
 
-            String[] result = new String[7];
+            ForecastItem[] result = new ForecastItem[7];
             JSONArray list = root.getJSONArray("list");
 
             for (int i = 0; i < list.length(); i++){
@@ -227,10 +215,7 @@ public class ForecastFragment extends Fragment {
 
                 calendar.add(GregorianCalendar.DATE, i);
 
-                SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
-                String day = shortenedDateFormat.format(calendar.getTimeInMillis());
-
-                result[i] = day + " - " + description + " - " + max + "/" + min;
+                result[i] = new ForecastItem(calendar, description, max, min);
             }
 
             return result;
