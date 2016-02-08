@@ -22,13 +22,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.igorvorobiov.sunshine.data.WeatherContract;
+import com.igorvorobiov.sunshine.data.WeatherModel;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String EXTRA_WEATHER = "weather";
+
     private static final int FORECAST_LOADER_ID = 1;
+
     private ForecastAdapter forecastAdapter = null;
 
     public ForecastFragment() {
@@ -48,8 +52,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         forecastListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Cursor cursor = (Cursor) getForecastAdapter().getItem(position);
+
+                WeatherModel model = new WeatherModel(cursor);
+
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, "");
+                intent.putExtra(EXTRA_WEATHER, model);
 
                 startActivity(intent);
             }

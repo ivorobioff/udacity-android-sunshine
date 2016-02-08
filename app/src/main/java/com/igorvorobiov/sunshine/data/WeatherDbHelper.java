@@ -3,7 +3,14 @@ package com.igorvorobiov.sunshine.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+
 import com.igorvorobiov.sunshine.data.WeatherContract.WeatherEntry;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Igor Vorobiov<igor.vorobioff@gmail.com>
@@ -15,8 +22,11 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "weather.db";
 
+    private Context ctx;
+
     public WeatherDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        ctx = context;
     }
 
     @Override
@@ -37,5 +47,20 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
         onCreate(db);
+    }
+
+    /**
+     * This is used for debugging purposes
+     */
+    public void export(){
+
+        File source = new File(getReadableDatabase().getPath());
+        File destination = new File(Environment.getExternalStorageDirectory(), "sunshine.db");
+
+        try {
+            FileUtils.copyFileToDirectory(source, destination);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

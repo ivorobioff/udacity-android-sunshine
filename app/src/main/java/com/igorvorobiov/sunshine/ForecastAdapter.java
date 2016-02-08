@@ -7,6 +7,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,34 +20,51 @@ import java.text.SimpleDateFormat;
  */
 public class ForecastAdapter extends CursorAdapter {
 
+    private static final int VIEW_TYPE_TODAY = 0;
+    private static final int VIEW_TYPE_NORMAL = 1;
+
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        LinearLayout view = (LinearLayout) LayoutInflater
-                .from(context)
-                .inflate(R.layout.list_item_forecast, null);
+    public int getItemViewType(int position) {
+        return position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_NORMAL;
+    }
 
-        populateView(view, cursor);
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        int resource;
+
+        if (getItemViewType(cursor.getPosition()) == VIEW_TYPE_TODAY){
+            resource = R.layout.list_item_forecast_today;
+        } else {
+            resource = R.layout.list_item_forecast;
+        }
+
+        LinearLayout view = (LinearLayout) LayoutInflater.from(context).inflate(resource, null);
+
+        view.setTag(new ViewHolder(view));
 
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        populateView((LinearLayout) view, cursor);
-    }
-
-    private void populateView(LinearLayout view, Cursor cursor){
+        ViewHolder holder = (ViewHolder) view.getTag();
 
         WeatherModel model = new WeatherModel(cursor);
 
-        ((TextView)view.findViewById(R.id.list_item_forecast_textview)).setText(model.getDescription());
+        holder.description.setText(model.getDescription());
 
         String date = new SimpleDateFormat("MM/dd/yyyy").format(model.getDate());
-        ((TextView) view.findViewById(R.id.list_item_date_textview)).setText(date);
+        holder.date.setText(date);
 
         String defaultUnits = mContext.getString(R.string.pref_default_unit_value);
 
@@ -56,8 +74,8 @@ public class ForecastAdapter extends CursorAdapter {
         Double max = convertUnits(model.getMax(), units, defaultUnits);
         Double min = convertUnits(model.getMin(), units, defaultUnits);
 
-        ((TextView) view.findViewById(R.id.list_item_low_textview)).setText(String.valueOf(max.intValue()));
-        ((TextView)view.findViewById(R.id.list_item_high_textview)).setText(String.valueOf(min.intValue()));
+        holder.max.setText(context.getString(R.string.formatted_temperature, max));
+        holder.min.setText(context.getString(R.string.formatted_temperature, min));
     }
 
     private Double convertUnits(Double number, String from, String to){
@@ -77,5 +95,21 @@ public class ForecastAdapter extends CursorAdapter {
         }
 
         throw new UnsupportedOperationException("Unable to convert '" + from + "' to '" + to + "'.");
+    }
+
+    private static class ViewHolder {
+        TextView description;
+        TextView date;
+        TextView min;
+        TextView max;
+        ImageView icon;
+
+        ViewHolder(View view){
+            date = (TextView) view.findViewById(R.id.list_item_date_textview);
+            description = (TextView) view.findViewById(R.id.list_item_forecast_textview);
+            max = (TextView)view.findViewById(R.id.list_item_high_textview);
+            min = (TextView) view.findViewById(R.id.list_item_low_textview);
+            icon = (ImageView) view.findViewById(R.id.list_item_icon);
+        }
     }
 }
