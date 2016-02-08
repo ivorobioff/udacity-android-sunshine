@@ -6,7 +6,7 @@
     </string-array>
 
     <string-array name="unitValues">
-        <item>imperial</item>
-        <item>metric</item>
+        <item>@string/pref_units_imperial</item>
+        <item>@string/pref_units_metric</item>
     </string-array>
 </resources>

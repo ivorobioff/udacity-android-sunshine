@@ -2,7 +2,7 @@ package com.igorvorobiov.sunshine.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 
 /**
  * @author Igor Vorobiov<igor.vorobioff@gmail.com>
@@ -15,19 +15,34 @@ public class WeatherRepository {
         this.dbHelper = dbHelper;
     }
 
-    public long create(ContentValues values) throws SQLException{
-        return 0L;
+    public int createAll(ContentValues[] values){
+        int count = 0;
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        db.beginTransaction();
+
+        try {
+            for (ContentValues value : values){
+                long id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
+
+                if (id != -1){
+                    count ++;
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        return count;
     }
 
-    public int deleteAll(){
-        return 0;
-    }
+    public Cursor getAllByLocation(String location){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-    public Cursor getAllByLocationSetting(String[] projection, String sortOrder){
-        return null;
-    }
-
-    public Cursor getAllByLocationSettingAndDate(String[] projection, String sortOrder){
-        return null;
+        return db.query(WeatherContract.WeatherEntry.TABLE_NAME, null,
+                WeatherContract.WeatherEntry.COLUMN_LOCATION + " = ?", new String[]{ location },
+                null, null, "date ASC");
     }
 }
