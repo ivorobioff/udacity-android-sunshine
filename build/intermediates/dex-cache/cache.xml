@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/ivorobioff/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.4/5fe28b9518e58819180a43a850fbc0dd24b7c050/commons-lang3-3.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5fe28b9518e58819180a43a850fbc0dd24b7c050">
+        <dex dex="/Users/ivorobioff/Documents/Projects/Udacity/Android/Sunshine/app/build/intermediates/pre-dexed/debug/commons-lang3-3.4_5a010dff1ad73ef02870282f37a303a7de724a32.jar" />
+    </item>
+
+</items>

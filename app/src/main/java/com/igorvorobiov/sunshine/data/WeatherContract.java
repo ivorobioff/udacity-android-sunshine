@@ -1,13 +1,8 @@
 package com.igorvorobiov.sunshine.data;
 
 import android.content.ContentResolver;
-import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Igor Vorobiov<igor.vorobioff@gmail.com>
@@ -41,6 +36,10 @@ public class WeatherContract {
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_MIN = "min";
         public static final String COLUMN_MAX = "max";
+        public static final String COLUMN_PRESSURE = "pressure";
+        public static final String COLUMN_HUMIDITY = "humidity";
+        public static final String COLUMN_WIND = "wind";
+        public static final String COLUMN_DEGREES = "degrees";
 
 
         public static Uri buildContentUriByLocation(String location){

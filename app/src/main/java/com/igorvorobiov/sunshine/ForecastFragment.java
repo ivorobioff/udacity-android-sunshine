@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.igorvorobiov.sunshine.data.WeatherContract;
-import com.igorvorobiov.sunshine.data.WeatherModel;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -55,7 +54,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
                 Cursor cursor = (Cursor) getForecastAdapter().getItem(position);
 
-                WeatherModel model = new WeatherModel(cursor);
+                WeatherViewModel model = new WeatherViewModel(cursor);
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra(EXTRA_WEATHER, model);

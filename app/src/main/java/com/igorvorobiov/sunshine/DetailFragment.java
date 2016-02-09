@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.igorvorobiov.sunshine.data.WeatherModel;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -21,12 +20,19 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        TextView label = (TextView) root.findViewById(R.id.weather_textview);
-
-        WeatherModel model = getActivity().getIntent()
+        WeatherViewModel model = getActivity().getIntent()
                 .getParcelableExtra(ForecastFragment.EXTRA_WEATHER);
 
-        label.setText(model.getDescription());
+        model.setContext(getContext());
+
+        ((TextView) root.findViewById(R.id.weather_description_textview)).setText(model.getDescription());
+        ((TextView) root.findViewById(R.id.weather_day_textview)).setText(model.getDay());
+        ((TextView) root.findViewById(R.id.weather_date_textview)).setText(model.getDate());
+        ((TextView) root.findViewById(R.id.weather_high_textview)).setText(model.getMax());
+        ((TextView) root.findViewById(R.id.weather_low_textview)).setText(model.getMin());
+        ((TextView) root.findViewById(R.id.weather_wind_textview)).setText(model.getWind());
+        ((TextView) root.findViewById(R.id.weather_humidity_textview)).setText(model.getHumidity());
+        ((TextView) root.findViewById(R.id.weather_pressure_textview)).setText(model.getPressure());
 
         return root;
     }

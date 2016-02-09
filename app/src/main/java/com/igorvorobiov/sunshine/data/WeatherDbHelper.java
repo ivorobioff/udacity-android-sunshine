@@ -39,6 +39,10 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 WeatherEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 WeatherEntry.COLUMN_MIN + " REAL NOT NULL, " +
                 WeatherEntry.COLUMN_MAX + " REAL NOT NULL, " +
+                WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
+                WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
+                WeatherEntry.COLUMN_WIND + " REAL NOT NULL, " +
+                WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
                 " UNIQUE (" + WeatherEntry.COLUMN_DAY + ", " +
                 WeatherEntry.COLUMN_LOCATION + ") ON CONFLICT REPLACE);");
     }

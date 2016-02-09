@@ -114,11 +114,20 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
             calendar.add(GregorianCalendar.DATE, i);
 
+            double pressure = item.getDouble("pressure");
+            double humidity = item.getDouble("humidity");
+            double wind = item.getDouble("speed");
+            double degrees = item.getDouble("deg");
+
             ContentValues value = new ContentValues();
             value.put(WeatherContract.WeatherEntry.COLUMN_DESCRIPTION, description);
             value.put(WeatherContract.WeatherEntry.COLUMN_DATE, calendar.getTimeInMillis());
             value.put(WeatherContract.WeatherEntry.COLUMN_MAX, max);
             value.put(WeatherContract.WeatherEntry.COLUMN_MIN, min);
+            value.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
+            value.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
+            value.put(WeatherContract.WeatherEntry.COLUMN_WIND, wind);
+            value.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, degrees);
             value.put(WeatherContract.WeatherEntry.COLUMN_LOCATION, location);
             value.put(WeatherContract.WeatherEntry.COLUMN_DAY, calendar.get(GregorianCalendar.DAY_OF_WEEK));
 
@@ -134,7 +143,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 .appendQueryParameter("q", location)
                 .appendQueryParameter("appid", API_KEY)
                 .appendQueryParameter("cnt", "7")
-                .appendQueryParameter("units", context.getString(R.string.pref_default_unit_value))
+                .appendQueryParameter("units", context.getString(R.string.pref_units_metric))
                 .toString();
     }
 }

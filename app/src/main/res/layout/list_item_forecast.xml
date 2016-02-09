@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
-        android:id="@+id/list_item_icon" />
+        android:id="@+id/weather_icon" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/list_item_date_textview" />
+            android:id="@+id/weather_date_textview" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/list_item_forecast_textview" />
+            android:id="@+id/weather_description_textview" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,12 +44,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/list_item_high_textview" />
+            android:id="@+id/weather_high_textview" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/list_item_low_textview" />
+            android:id="@+id/weather_low_textview" />
     </LinearLayout>
 </LinearLayout>

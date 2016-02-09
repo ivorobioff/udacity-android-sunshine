@@ -20,4 +20,12 @@
     <string name="pref_units_metric">metric</string>
 
     <string name="formatted_temperature"><xliff:g>%.0f</xliff:g>\u00B0</string>
+    <string name="formatted_day_today">Today</string>
+    <string name="formatted_day_tomorrow">Tomorrow</string>
+
+    <string name="formatted_wind_mph">Wind: <xliff:g id="speed">%.0f</xliff:g> mph <xliff:g id="direction">%s</xliff:g></string>
+    <string name="formatted_wind_kmh">Wind: <xliff:g id="speed">%.0f</xliff:g> km/h <xliff:g id="direction">%s</xliff:g></string>
+
+    <string name="formatted_pressure">Pressure: <xliff:g id="pressure">%.0f</xliff:g> hPa</string>
+    <string name="formatted_humidity">Humidity: <xliff:g id="humidity">%.0f</xliff:g>%%</string>
 </resources>
