@@ -43,7 +43,7 @@ public class ForecastAdapter extends CursorAdapter {
             resource = R.layout.list_item_forecast;
         }
 
-        LinearLayout view = (LinearLayout) LayoutInflater.from(context).inflate(resource, null);
+        View view = LayoutInflater.from(context).inflate(resource, null);
 
         view.setTag(new ViewHolder(view));
 
@@ -58,20 +58,20 @@ public class ForecastAdapter extends CursorAdapter {
         model.setContext(context);
 
         holder.description.setText(model.getDescription());
-        holder.date.setText(model.getDay());
+        holder.day.setText(model.getDay());
         holder.max.setText(model.getMax());
         holder.min.setText(model.getMin());
     }
 
     private static class ViewHolder {
         TextView description;
-        TextView date;
+        TextView day;
         TextView min;
         TextView max;
         ImageView icon;
 
         ViewHolder(View view){
-            date = (TextView) view.findViewById(R.id.weather_date_textview);
+            day = (TextView) view.findViewById(R.id.weather_day_textview);
             description = (TextView) view.findViewById(R.id.weather_description_textview);
             max = (TextView)view.findViewById(R.id.weather_high_textview);
             min = (TextView) view.findViewById(R.id.weather_low_textview);
