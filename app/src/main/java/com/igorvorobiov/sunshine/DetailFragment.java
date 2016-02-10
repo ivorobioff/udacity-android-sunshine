@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -33,6 +34,7 @@ public class DetailFragment extends Fragment {
         ((TextView) root.findViewById(R.id.weather_wind_textview)).setText(model.getWind());
         ((TextView) root.findViewById(R.id.weather_humidity_textview)).setText(model.getHumidity());
         ((TextView) root.findViewById(R.id.weather_pressure_textview)).setText(model.getPressure());
+        ((ImageView) root.findViewById(R.id.weather_icon)).setImageResource(model.getArtResource());
 
         return root;
     }

@@ -61,6 +61,12 @@ public class ForecastAdapter extends CursorAdapter {
         holder.day.setText(model.getDay());
         holder.max.setText(model.getMax());
         holder.min.setText(model.getMin());
+
+        if (getItemViewType(cursor.getPosition()) == VIEW_TYPE_TODAY){
+            holder.icon.setImageResource(model.getArtResource());
+        } else {
+            holder.icon.setImageResource(model.getIconResource());
+        }
     }
 
     private static class ViewHolder {

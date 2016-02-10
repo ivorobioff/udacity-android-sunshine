@@ -29,6 +29,7 @@ public class WeatherViewModel implements Parcelable {
     private Double humidity;
     private Double wind;
     private Double degrees;
+    private Integer condition;
 
     /**
      * Creates a cursor wrapper.
@@ -44,6 +45,7 @@ public class WeatherViewModel implements Parcelable {
         humidity = cursor.getDouble(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_HUMIDITY));
         wind = cursor.getDouble(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WIND));
         degrees = cursor.getDouble(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DEGREES));
+        condition = cursor.getInt(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_CONDITION));
     }
 
     protected WeatherViewModel(Parcel in) {
@@ -55,6 +57,7 @@ public class WeatherViewModel implements Parcelable {
         humidity = in.readDouble();
         wind = in.readDouble();
         degrees = in.readDouble();
+        condition = in.readInt();
     }
 
     public static final Creator<WeatherViewModel> CREATOR = new Creator<WeatherViewModel>() {
@@ -84,10 +87,107 @@ public class WeatherViewModel implements Parcelable {
         dest.writeDouble(humidity);
         dest.writeDouble(wind);
         dest.writeDouble(degrees);
+        dest.writeInt(condition);
     }
 
     public void setContext(Context context){
         this.context = context;
+    }
+
+    public int getArtResource(){
+        if (condition >= 200 && condition <= 232) {
+            return R.drawable.art_storm;
+        }
+
+        if (condition >= 300 && condition <= 321) {
+            return R.drawable.art_light_rain;
+        }
+
+        if (condition >= 500 && condition <= 504) {
+            return R.drawable.art_rain;
+        }
+
+        if (condition == 511) {
+            return R.drawable.art_snow;
+        }
+
+        if (condition >= 520 && condition <= 531) {
+            return R.drawable.art_rain;
+        }
+
+        if (condition >= 600 && condition <= 622) {
+            return R.drawable.art_snow;
+        }
+
+        if (condition >= 701 && condition <= 761) {
+            return R.drawable.art_fog;
+        }
+
+        if (condition == 761 || condition == 781) {
+            return R.drawable.art_storm;
+        }
+
+        if (condition == 800) {
+            return R.drawable.art_clear;
+        }
+
+        if (condition == 801) {
+            return R.drawable.art_light_clouds;
+        }
+
+        if (condition >= 802 && condition <= 804) {
+            return R.drawable.art_clouds;
+        }
+
+        return -1;
+    }
+
+    public int getIconResource(){
+        if (condition >= 200 && condition <= 232) {
+            return R.drawable.ic_storm;
+        }
+
+        if (condition >= 300 && condition <= 321) {
+            return R.drawable.ic_light_rain;
+        }
+
+        if (condition >= 500 && condition <= 504) {
+            return R.drawable.ic_rain;
+        }
+
+        if (condition == 511) {
+            return R.drawable.ic_snow;
+        }
+
+        if (condition >= 520 && condition <= 531) {
+            return R.drawable.ic_rain;
+        }
+
+        if (condition >= 600 && condition <= 622) {
+            return R.drawable.ic_snow;
+        }
+
+        if (condition >= 701 && condition <= 761) {
+            return R.drawable.ic_fog;
+        }
+
+        if (condition == 761 || condition == 781) {
+            return R.drawable.ic_storm;
+        }
+
+        if (condition == 800) {
+            return R.drawable.ic_clear;
+        }
+
+        if (condition == 801) {
+            return R.drawable.ic_light_clouds;
+        }
+
+        if (condition >= 802 && condition <= 804) {
+            return R.drawable.ic_cloudy;
+        }
+
+        return -1;
     }
 
     public String getDate(){

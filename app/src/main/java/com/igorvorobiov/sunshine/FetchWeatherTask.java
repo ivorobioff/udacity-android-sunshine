@@ -103,9 +103,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
             JSONObject item = list.getJSONObject(i);
 
-            String description = item.getJSONArray("weather")
-                    .getJSONObject(0)
-                    .getString("description");
+            JSONObject weatherJSON = item.getJSONArray("weather").getJSONObject(0);
+
+            String description = weatherJSON.getString("main");
+            int condition = weatherJSON.getInt("id");
 
             double max = item.getJSONObject("temp").getDouble("max");
             double min = item.getJSONObject("temp").getDouble("min");
@@ -129,6 +130,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             value.put(WeatherContract.WeatherEntry.COLUMN_WIND, wind);
             value.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, degrees);
             value.put(WeatherContract.WeatherEntry.COLUMN_LOCATION, location);
+            value.put(WeatherContract.WeatherEntry.COLUMN_CONDITION, condition);
             value.put(WeatherContract.WeatherEntry.COLUMN_DAY, calendar.get(GregorianCalendar.DAY_OF_WEEK));
 
             values[i] = value;

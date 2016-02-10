@@ -40,6 +40,7 @@ public class WeatherContract {
         public static final String COLUMN_HUMIDITY = "humidity";
         public static final String COLUMN_WIND = "wind";
         public static final String COLUMN_DEGREES = "degrees";
+        public static final String COLUMN_CONDITION = "condition";
 
 
         public static Uri buildContentUriByLocation(String location){
