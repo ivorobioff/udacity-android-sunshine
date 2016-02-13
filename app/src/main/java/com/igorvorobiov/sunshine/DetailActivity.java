@@ -3,6 +3,7 @@ package com.igorvorobiov.sunshine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -21,6 +22,14 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        WeatherViewModel model = getIntent().getParcelableExtra(MainActivity.VIEW_MODEL);
+
+        fragmentTransaction.add(R.id.fragment_detail_container, DetailFragment.newInstance(model, 0));
+
+        fragmentTransaction.commit();
     }
 
     @Override

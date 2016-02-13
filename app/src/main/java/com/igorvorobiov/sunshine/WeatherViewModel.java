@@ -31,6 +31,12 @@ public class WeatherViewModel implements Parcelable {
     private Double degrees;
     private Integer condition;
 
+
+    public WeatherViewModel(Cursor cursor, Context context) {
+        this(cursor);
+        setContext(context);
+    }
+
     /**
      * Creates a cursor wrapper.
      *
