@@ -45,4 +45,23 @@ public class WeatherRepository {
                 WeatherContract.WeatherEntry.COLUMN_LOCATION + " = ?", new String[]{ location },
                 null, null, "date ASC");
     }
+
+    public Cursor getByLocationAndDay(String location, Integer day){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String constraint = WeatherContract.WeatherEntry.COLUMN_LOCATION + " = ? AND "
+                + WeatherContract.WeatherEntry.COLUMN_DAY + " = ?";
+
+        String[] parameters = {location, day.toString()};
+
+        return db.query(
+                WeatherContract.WeatherEntry.TABLE_NAME,
+                null,
+                constraint,
+                parameters,
+                null,
+                null,
+                null
+        );
+    }
 }

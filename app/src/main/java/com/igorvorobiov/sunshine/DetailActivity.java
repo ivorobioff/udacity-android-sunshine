@@ -1,35 +1,35 @@
 package com.igorvorobiov.sunshine;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class DetailActivity extends AppCompatActivity {
+import com.igorvorobiov.sunshine.data.WeatherContract;
+
+public class DetailActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final String INTENT_EXTRA_DAY = "day";
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_detail;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-        WeatherViewModel model = getIntent().getParcelableExtra(MainActivity.VIEW_MODEL);
-
-        fragmentTransaction.add(R.id.fragment_detail_container, DetailFragment.newInstance(model, 0));
-
-        fragmentTransaction.commit();
     }
 
     @Override
@@ -51,17 +51,30 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                this,
+                WeatherContract.WeatherEntry.buildContentUriByLocationAndDay(
+                        getPreferredLocation(),
+                        getSelectedDay()
+                ),
+                null, null, null, null
+        );
+    }
 
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT,
-                    SettingsActivity.GeneralPreferenceFragment.class.getName());
+    private int getSelectedDay(){
+        return getIntent().getIntExtra(INTENT_EXTRA_DAY, -1);
+    }
 
-            startActivity(intent);
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.moveToFirst()){
+            refreshDetailFragment(data, DetailFragment.NO_POSITION);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

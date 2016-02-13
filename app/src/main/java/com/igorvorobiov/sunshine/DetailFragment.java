@@ -18,7 +18,12 @@ public class DetailFragment extends Fragment {
     public static final String VIEW_MODEL = "model";
     public static final String POSITION = "position";
 
+    public static final int NO_POSITION = -1;
+
     private String preferredUnits;
+
+    private WeatherViewModel model;
+    private int position;
 
     public DetailFragment() {
 
@@ -26,19 +31,18 @@ public class DetailFragment extends Fragment {
 
     public static DetailFragment newInstance(WeatherViewModel model, int position){
         DetailFragment detailFragment = new DetailFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(VIEW_MODEL, model);
-        bundle.putInt(POSITION, position);
-
-        detailFragment.setArguments(bundle);
-
+        detailFragment.initialize(model, position);
         return detailFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (savedInstanceState != null){
+            model = savedInstanceState.getParcelable(VIEW_MODEL);
+            position = savedInstanceState.getInt(POSITION);
+        }
 
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
         refreshFragment(root);
@@ -58,12 +62,16 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public int getPosition(){
-        return getArguments().getInt(POSITION);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(VIEW_MODEL, model);
+        outState.putInt(POSITION, position);
     }
 
-    private void refreshFragment(WeatherViewModel model){
-        refreshFragment(getView(), model);
+    public int getPosition(){
+        return position;
     }
 
     private void refreshFragment(){
@@ -71,13 +79,6 @@ public class DetailFragment extends Fragment {
     }
 
     private void refreshFragment(View root){
-        WeatherViewModel model = getArguments().getParcelable(VIEW_MODEL);
-        model.setContext(getContext());
-
-        refreshFragment(root, model);
-    }
-
-    private void refreshFragment(View root , WeatherViewModel model){
 
         ((TextView) root.findViewById(R.id.weather_description_textview)).setText(model.getDescription());
         ((TextView) root.findViewById(R.id.weather_day_textview)).setText(model.getDay());
@@ -91,9 +92,8 @@ public class DetailFragment extends Fragment {
     }
 
     public void refresh(WeatherViewModel model, int position){
-        getArguments().putParcelable(VIEW_MODEL, model);
-        getArguments().putInt(POSITION, position);
-        refreshFragment(model);
+        initialize(model, position);
+        refreshFragment();
     }
 
     private String getPreferredUnits() {
@@ -101,4 +101,8 @@ public class DetailFragment extends Fragment {
         return preferences.getString("units", getString(R.string.pref_default_unit_value));
     }
 
+    public void initialize(WeatherViewModel model, int position){
+        this.model = model;
+        this.position = position;
+    }
 }

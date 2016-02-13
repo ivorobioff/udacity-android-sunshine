@@ -46,5 +46,12 @@ public class WeatherContract {
         public static Uri buildContentUriByLocation(String location){
             return CONTENT_URI.buildUpon().appendEncodedPath(location).build();
         }
+
+        public static Uri buildContentUriByLocationAndDay(String location, Integer day){
+            return buildContentUriByLocation(location)
+                    .buildUpon()
+                    .appendPath(day.toString())
+                    .build();
+        }
     }
 }

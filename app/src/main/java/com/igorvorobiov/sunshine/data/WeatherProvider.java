@@ -15,6 +15,7 @@ public class WeatherProvider extends ContentProvider {
 
     private static final int WEATHER = 100;
     private static final int WEATHER_BY_LOCATION = 102;
+    private static final int WEATHER_BY_LOCATION_AND_DAY = 103;
 
     private WeatherRepository weatherRepository;
 
@@ -32,6 +33,12 @@ public class WeatherProvider extends ContentProvider {
                 WeatherContract.CONTENT_AUTHORITY,
                 WeatherContract.WeatherEntry.URI_SEGMENT + "/*",
                 WEATHER_BY_LOCATION
+        );
+
+        matcher.addURI(
+                WeatherContract.CONTENT_AUTHORITY,
+                WeatherContract.WeatherEntry.URI_SEGMENT + "/*/#",
+                WEATHER_BY_LOCATION_AND_DAY
         );
     }
 
@@ -52,6 +59,15 @@ public class WeatherProvider extends ContentProvider {
             return cursor;
         }
 
+        if (matcher.match(uri) == WEATHER_BY_LOCATION_AND_DAY){
+            String location = uri.getPathSegments().get(1);
+            Integer day = Integer.parseInt(uri.getPathSegments().get(2));
+
+            Cursor cursor = weatherRepository.getByLocationAndDay(location, day);
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+            return cursor;
+        }
+
         throw new UnsupportedOperationException("Unable to get data for: " + uri);
     }
 
@@ -61,6 +77,10 @@ public class WeatherProvider extends ContentProvider {
 
         if (matcher.match(uri) == WEATHER_BY_LOCATION){
             return WeatherContract.WeatherEntry.CONTENT_DIR_TYPE;
+        }
+
+        if (matcher.match(uri) == WEATHER_BY_LOCATION_AND_DAY){
+            return WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE;
         }
 
         throw new UnsupportedOperationException("Unable to get content type for: " + uri);
